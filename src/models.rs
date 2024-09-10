@@ -25,6 +25,8 @@ pub enum Model {
     Gpt_4Turbo,
     #[serde(rename = "gpt-4o")]
     Gpt_4o,
+    #[serde(rename = "gpt-4o-mini")]
+    Gpt_4o_mini,
     #[serde(rename = "gpt-4-vision-preview")]
     Gpt_4Turbo_Vision,
 }
@@ -36,6 +38,7 @@ impl Model {
             Model::Gpt_4 => 8192,
             Model::Gpt_4_32k => 32768,
             Model::Gpt_4o => 128000,
+            Model::Gpt_4o_mini => 16384,
             Model::Gpt_4Turbo => 128000,
             Model::Gpt_4Turbo_Vision => 128000,
         }
@@ -50,6 +53,7 @@ impl Display for Model {
             Model::Gpt_4 => "gpt-4",
             Model::Gpt_4_32k => "gpt-4-32k",
             Model::Gpt_4o => "gpt-4o",
+            Model::Gpt_4o_mini => "gpt-4o-mini",
             Model::Gpt_4Turbo => "gpt-4-1106-preview",
             Model::Gpt_4Turbo_Vision => "gpt-4-vision-preview",
         };
@@ -115,7 +119,7 @@ mod tests {
     #[test]
     fn test_from_str_gpt3_5turbo() {
         let input = "gpt-3.5-turbo";
-        let model: Result<Model, ()> = Model::from_str(input);
+        let model: Result<Model, ModelError> = Model::from_str(input);
         assert!(
             model.is_ok(),
             "Failed to parse the gpt-3.5-turbo model name"
@@ -127,7 +131,7 @@ mod tests {
     #[test]
     fn test_from_str_gpt4() {
         let input = "gpt-4";
-        let model: Result<Model, ()> = Model::from_str(input);
+        let model: Result<Model, ModelError> = Model::from_str(input);
         assert!(model.is_ok(), "Failed to parse the gpt-4 model name");
         assert_eq!(model.unwrap(), Model::Gpt_4);
     }
@@ -136,7 +140,7 @@ mod tests {
     #[test]
     fn test_from_str_invalid() {
         let input = "invalid-model";
-        let model: Result<Model, ()> = Model::from_str(input);
+        let model: Result<Model, ModelError> = Model::from_str(input);
         assert!(model.is_err(), "Parsed an invalid model name");
     }
 
@@ -184,7 +188,7 @@ mod tests {
     #[test]
     fn test_from_str_gpt4_32k() {
         let input = "gpt-4-32k";
-        let model: Result<Model, ()> = Model::from_str(input);
+        let model: Result<Model, ModelError> = Model::from_str(input);
         assert!(model.is_ok(), "Failed to parse the gpt-4-32k model name");
         assert_eq!(model.unwrap(), Model::Gpt_4_32k);
     }
@@ -275,7 +279,7 @@ mod tests {
     #[test]
     fn test_from_str_gpt_4turbo() {
         let input = "gpt-4-1106-preview";
-        let model: Result<Model, ()> = Model::from_str(input);
+        let model: Result<Model, ModelError> = Model::from_str(input);
         assert!(
             model.is_ok(),
             "Failed to parse the gpt-4-1106-preview model name"
@@ -311,7 +315,7 @@ mod tests {
     #[test]
     fn test_from_str_gpt_4turbo_vision() {
         let input = "gpt-4-vision-preview";
-        let model: Result<Model, ()> = Model::from_str(input);
+        let model: Result<Model, ModelError> = Model::from_str(input);
         assert!(
             model.is_ok(),
             "Failed to parse the gpt-4-vision-preview model name"
@@ -361,7 +365,7 @@ mod tests {
     #[test]
     fn test_from_str_gpt_4o() {
         let input = "gpt-4o";
-        let model: Result<Model, ()> = Model::from_str(input);
+        let model: Result<Model, ModelError> = Model::from_str(input);
         assert!(model.is_ok(), "Failed to parse the gpt-4o model name");
         assert_eq!(model.unwrap(), Model::Gpt_4o);
     }
